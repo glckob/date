@@ -126,6 +126,26 @@
       color: #475569;
       margin-top: 8px;
     }
+
+    .formula-section {
+      margin-top: 15px;
+      padding: 15px;
+      background: #eff6ff; /* ផ្ទៃពណ៌ខៀវខ្ចី ងាយចំណាំ */
+      border-radius: 10px;
+      border: 2px dashed #bfdbfe; /* បន្ទាត់ដាច់ៗ */
+      font-size: 18px; /* អក្សរធំល្មមងាយអាន */
+      color: #1e3a8a;
+      text-align: left;
+      display: none; /* លាក់សិន វានឹងបង្ហាញពេលចុចគណនា */
+      line-height: 1.6;
+    }
+
+    .credit {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #64748b; /* ពណ៌ប្រផេះស្រាល */
+    }
   </style>
 </head>
 <body>
@@ -152,6 +172,12 @@
     <div class="result" id="result">
       លទ្ធផលនឹងបង្ហាញទីនេះ
     </div>
+
+    <!-- ប្រអប់សម្រាប់បង្ហាញរូបមន្ត -->
+    <div class="formula-section" id="formula"></div>
+
+    <!-- ឈ្មោះអ្នកសរសេរកម្មវិធី -->
+    <div class="credit">សរសេរកម្មវិធីដោយៈ វង្ស សាណូវុទ្ធ</div>
   </div>
 
   <script>
@@ -222,6 +248,26 @@
         <span style="color: #15803d; font-weight: bold;">${months} ខែ ${days} ថ្ងៃ</span>
         <span class="total-days">(${totalDays} ថ្ងៃសរុប)</span>
       `;
+
+      // --- ផ្នែកបង្ហាញរូបមន្ត និងវិធីគណនា ---
+      let rawMonths = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+      let rawDaysDiff = end.getDate() - start.getDate();
+      
+      let formulaHtml = `<div style="font-weight: bold; margin-bottom: 8px; color: #1d4ed8;">💡 របៀបគណនា៖</div>`;
+      formulaHtml += `<div style="margin-bottom: 5px;">• <b>រកខែ៖</b> (${end.getFullYear()} - ${start.getFullYear()}) × ១២ខែ + (${end.getMonth() + 1} - ${start.getMonth() + 1}) = ${rawMonths} ខែ</div>`;
+      
+      if (rawDaysDiff < 0) {
+        // ករណីថ្ងៃខ្វះ ត្រូវខ្ចីខែ
+        formulaHtml += `<div style="margin-bottom: 5px;">• <b>រកថ្ងៃ៖</b> ថ្ងៃទី ${end.getDate()} - ថ្ងៃទី ${start.getDate()} = ${rawDaysDiff} ថ្ងៃ (ខ្វះថ្ងៃ ទើបខ្ចី ១ខែ)</div>`;
+        formulaHtml += `<div>👉 <b>សរុប៖</b> ដក ១ខែចេញសល់ <b>${months} ខែ</b> និង <b>${days} ថ្ងៃ</b></div>`;
+      } else {
+        // ករណីថ្ងៃគ្រប់គ្រាន់
+        formulaHtml += `<div>• <b>រកថ្ងៃ៖</b> ថ្ងៃទី ${end.getDate()} - ថ្ងៃទី ${start.getDate()} = <b>${days} ថ្ងៃ</b></div>`;
+      }
+      
+      const formulaEl = document.getElementById('formula');
+      formulaEl.innerHTML = formulaHtml;
+      formulaEl.style.display = 'block'; // បង្ហាញប្រអប់រូបមន្ត
     }
   </script>
 </body>
