@@ -4,7 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Date Calculator</title>
+
+  <!-- Embed Fonts (IMPORTANT for iOS) -->
   <style>
+    @font-face {
+      font-family: 'KhmerOSMuolLight';
+      src: url('fonts/KhmerOSmuollight.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'Hanuman';
+      src: url('fonts/Hanuman-Regular.ttf') format('truetype');
+    }
+
     body {
       font-family: 'Hanuman', serif;
       background: #0f172a;
@@ -14,11 +26,6 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-    }
-
-    @font-face {
-      font-family: 'KhmerOSMuolLight';
-      src: local('Khmer OS Muol Light');
     }
 
     .card {
@@ -31,7 +38,7 @@
     }
 
     .title {
-      font-family: 'KhmerOSMuolLight', serif;
+      font-family: 'KhmerOSMuolLight';
       text-align: center;
       font-size: 22px;
       margin-bottom: 10px;
@@ -39,18 +46,37 @@
 
     h2 { text-align: center; }
 
-    input, button, label {
-      font-family: 'Hanuman', serif;
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .row {
+      display: flex;
+      gap: 5px;
+    }
+
+    select {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Hanuman';
+      background: #334155;
+      color: white;
+    }
+
+    button {
       width: 100%;
       padding: 12px;
       margin-top: 10px;
       border-radius: 10px;
       border: none;
-      font-size: 16px;
+      background: #22c55e;
+      color: black;
+      font-weight: bold;
+      font-family: 'Hanuman';
     }
-
-    input { background: #334155; color: white; }
-    button { background: #22c55e; color: black; font-weight: bold; }
 
     .result {
       margin-top: 15px;
@@ -58,7 +84,6 @@
       background: #020617;
       border-radius: 10px;
       text-align: center;
-      font-family: 'Hanuman', serif;
     }
   </style>
 </head>
@@ -69,10 +94,18 @@
     <h2>គណនាកាលបរិច្ឆេទ</h2>
 
     <label>ថ្ងៃចាប់ផ្តើម</label>
-    <input type="date" id="startDate">
+    <div class="row">
+      <select id="sDay"></select>
+      <select id="sMonth"></select>
+      <select id="sYear"></select>
+    </div>
 
-    <label>ថ្ងៃបច្ចុប្បន្ន (អាចកែបាន)</label>
-    <input type="date" id="endDate">
+    <label>ថ្ងៃបច្ចុប្បន្ន</label>
+    <div class="row">
+      <select id="eDay"></select>
+      <select id="eMonth"></select>
+      <select id="eYear"></select>
+    </div>
 
     <button onclick="calculate()">គណនា</button>
 
@@ -80,24 +113,45 @@
   </div>
 
   <script>
-    // Default = today
-    document.getElementById('endDate').valueAsDate = new Date();
+    function fillSelect(id, start, end) {
+      const el = document.getElementById(id);
+      for (let i = start; i <= end; i++) {
+        let val = i.toString().padStart(2, '0');
+        let opt = document.createElement('option');
+        opt.value = i;
+        opt.text = val;
+        el.appendChild(opt);
+      }
+    }
+
+    // Fill dropdowns
+    fillSelect('sDay', 1, 31);
+    fillSelect('eDay', 1, 31);
+    fillSelect('sMonth', 1, 12);
+    fillSelect('eMonth', 1, 12);
+    fillSelect('sYear', 2000, 2035);
+    fillSelect('eYear', 2000, 2035);
+
+    // Set today default
+    const today = new Date();
+    document.getElementById('eDay').value = today.getDate();
+    document.getElementById('eMonth').value = today.getMonth() + 1;
+    document.getElementById('eYear').value = today.getFullYear();
 
     function calculate() {
-      const startVal = document.getElementById('startDate').value;
-      const endVal = document.getElementById('endDate').value;
+      let start = new Date(
+        document.getElementById('sYear').value,
+        document.getElementById('sMonth').value - 1,
+        document.getElementById('sDay').value
+      );
 
-      if (!startVal || !endVal) {
-        document.getElementById('result').innerText = "សូមបញ្ចូលថ្ងៃឲ្យគ្រប់";
-        return;
-      }
+      let end = new Date(
+        document.getElementById('eYear').value,
+        document.getElementById('eMonth').value - 1,
+        document.getElementById('eDay').value
+      );
 
-      let start = new Date(startVal);
-      let end = new Date(endVal);
-
-      if (end < start) {
-        [start, end] = [end, start];
-      }
+      if (end < start) [start, end] = [end, start];
 
       let months = (end.getFullYear() - start.getFullYear()) * 12;
       months += end.getMonth() - start.getMonth();
@@ -110,8 +164,7 @@
         days += prevMonth.getDate();
       }
 
-      const diffTime = Math.abs(end - start);
-      const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24));
 
       document.getElementById('result').innerHTML = `
         ${months} ខែ ${days} ថ្ងៃ<br>
