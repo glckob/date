@@ -5,92 +5,132 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Date Calculator</title>
 
-  <!-- Embed Fonts (IMPORTANT for iOS) -->
+  <!-- Embed Google Fonts for Khmer Support -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanuman:wght@400;700&family=Moul&display=swap" rel="stylesheet">
+
   <style>
-    @font-face {
-      font-family: 'KhmerOSMuolLight';
-      src: url('KhmerOSmuollight.ttf') format('truetype');
-    }
-
-    @font-face {
-      font-family: 'Hanuman';
-      src: url('Hanuman-Regular.ttf') format('truetype');
-    }
-
     body {
       font-family: 'Hanuman', serif;
-      background: #0f172a;
-      color: white;
+      background: #f1f5f9; /* ពណ៌សប្រផេះខ្ចី ស្រឡះភ្នែក */
+      color: #0f172a; /* អក្សរពណ៌ខ្មៅដិតច្បាស់ */
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      align-items: flex-start; 
+      min-height: 100vh;
+      padding-top: 40px; 
       margin: 0;
+      box-sizing: border-box;
     }
 
     .card {
-      background: #1e293b;
-      padding: 20px;
+      background: #ffffff; /* ផ្ទៃកាតពណ៌សក្បុស */
+      padding: 24px;
       border-radius: 20px;
-      width: 100%;
-      max-width: 350px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      width: 90%;
+      max-width: 380px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* ស្រមោលព្រាលៗ */
+      border: 1px solid #e2e8f0;
     }
 
     .title {
-      font-family: 'KhmerOSMuolLight';
+      font-family: 'Moul', serif; 
       text-align: center;
-      font-size: 22px;
-      margin-bottom: 10px;
+      font-size: 24px;
+      margin-bottom: 5px;
+      color: #1d4ed8; /* ពណ៌ខៀវចាស់ ដិតច្បាស់ល្អ */
     }
 
-    h2 { text-align: center; }
+    h2 { 
+      text-align: center; 
+      margin-top: 5px;
+      margin-bottom: 20px;
+      font-size: 20px; 
+      color: #475569; /* ពណ៌ប្រផេះចាស់ */
+    }
 
     label {
       display: block;
-      margin-top: 10px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-size: 18px; 
+      font-weight: bold; /* ធ្វើឲ្យអក្សរចំណងជើងដិត */
+      color: #0f172a; 
     }
 
     .row {
       display: flex;
-      gap: 5px;
+      gap: 10px; 
     }
 
     select {
       flex: 1;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      font-family: 'Hanuman';
-      background: #334155;
-      color: white;
+      padding: 14px 10px; 
+      border-radius: 8px;
+      border: 2px solid #cbd5e1; /* បន្ទាត់ជុំវិញរាងក្រាស់បន្តិច ងាយមើល */
+      font-family: 'Hanuman', serif;
+      background: #ffffff;
+      color: #0f172a; /* លេខពណ៌ខ្មៅដិត */
+      font-size: 22px; 
+      font-weight: bold;
+      outline: none;
+      appearance: none;
+      text-align: center; 
+    }
+    
+    select:focus {
+      border-color: #2563eb; /* ពេលចុចចេញបន្ទាត់ពណ៌ខៀវច្បាស់ */
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      margin-top: 10px;
+      padding: 18px; 
+      margin-top: 25px;
       border-radius: 10px;
       border: none;
-      background: #22c55e;
-      color: black;
+      background: #16a34a; /* ពណ៌បៃតងចាស់បន្តិច ងាយមើលលើផ្ទៃស */
+      color: white;
+      font-size: 28px; 
       font-weight: bold;
-      font-family: 'Hanuman';
+      font-family: 'Hanuman', serif;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    button:hover {
+      background: #15803d;
+    }
+
+    button:active {
+      transform: scale(0.98);
     }
 
     .result {
-      margin-top: 15px;
-      padding: 10px;
-      background: #020617;
+      margin-top: 25px;
+      padding: 20px 15px;
+      background: #f8fafc; /* ផ្ទៃលទ្ធផលពណ៌សប្រផេះខ្ចី */
       border-radius: 10px;
       text-align: center;
+      font-size: 24px; 
+      border: 2px solid #e2e8f0;
+      min-height: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .total-days {
+      font-size: 18px; 
+      color: #475569;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="title">ម៉ាស៊ីនកិនស្រូវលីអួង</div>
-
     <h2>គណនាកាលបរិច្ឆេទ</h2>
 
     <label>ថ្ងៃចាប់ផ្តើម</label>
@@ -109,7 +149,9 @@
 
     <button onclick="calculate()">គណនា</button>
 
-    <div class="result" id="result">លទ្ធផលនឹងបង្ហាញទីនេះ</div>
+    <div class="result" id="result">
+      លទ្ធផលនឹងបង្ហាញទីនេះ
+    </div>
   </div>
 
   <script>
@@ -132,11 +174,16 @@
     fillSelect('sYear', 2000, 2035);
     fillSelect('eYear', 2000, 2035);
 
-    // Set today default
+    // Set today's date as default for the "Current Date"
     const today = new Date();
     document.getElementById('eDay').value = today.getDate();
     document.getElementById('eMonth').value = today.getMonth() + 1;
     document.getElementById('eYear').value = today.getFullYear();
+    
+    // Default the start date to the 1st of the current month and year for better UX
+    document.getElementById('sDay').value = 1;
+    document.getElementById('sMonth').value = today.getMonth() + 1;
+    document.getElementById('sYear').value = today.getFullYear();
 
     function calculate() {
       let start = new Date(
@@ -151,7 +198,10 @@
         document.getElementById('eDay').value
       );
 
-      if (end < start) [start, end] = [end, start];
+      // Swap if end date is before start date
+      if (end < start) {
+        [start, end] = [end, start];
+      }
 
       let months = (end.getFullYear() - start.getFullYear()) * 12;
       months += end.getMonth() - start.getMonth();
@@ -160,15 +210,17 @@
 
       if (days < 0) {
         months--;
+        // Get the number of days in the previous month
         const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
         days += prevMonth.getDate();
       }
 
+      // Calculate total exact days
       const totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24));
 
       document.getElementById('result').innerHTML = `
-        ${months} ខែ ${days} ថ្ងៃ<br>
-        (${totalDays} ថ្ងៃសរុប)
+        <span style="color: #15803d; font-weight: bold;">${months} ខែ ${days} ថ្ងៃ</span>
+        <span class="total-days">(${totalDays} ថ្ងៃសរុប)</span>
       `;
     }
   </script>
