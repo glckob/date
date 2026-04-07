@@ -2,8 +2,20 @@
 <html lang="km">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Date Calculator</title>
+
+  <!-- PWA & Home Screen App Setup -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="គណនាថ្ងៃ">
+  <meta name="application-name" content="គណនាថ្ងៃ">
+  <meta name="theme-color" content="#f1f5f9">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Icon សម្រាប់ Bookmark និង Home Screen (រូបកាក់មាស 🪙) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪙</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪙</text></svg>">
 
   <!-- Embed Google Fonts for Khmer Support -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -151,7 +163,7 @@
 <body>
   <div class="card">
     <div class="title">ម៉ាស៊ីនកិនស្រូវលីអួង</div>
-    <h2>រកចំនួនខែនិងថ្ងៃសរុប</h2>
+    <h2>គណនាកាលបរិច្ឆេទ</h2>
 
     <label>ថ្ងៃចាប់ផ្តើម</label>
     <div class="row">
@@ -272,3 +284,5 @@
   </script>
 </body>
 </html>
+
+
